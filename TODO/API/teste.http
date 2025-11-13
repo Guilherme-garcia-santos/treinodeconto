@@ -1,2 +1,27 @@
 ### teste inicial
-http://localhost:5157
+GET http://localhost:5157
+
+### Cadastrar tarefa
+POST http://localhost:5157/api/tarefas/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Prova dev Visual"
+}
+
+### Listar tarefas
+GET http://localhost:5157/api/tarefas/listar
+
+### Buscar tarefas
+GET http://localhost:5157/api/tarefas/buscar/5
+
+### Deletar tarefas
+DELETE http://localhost:5157/api/tarefas/deletar/3
+
+### modificar nome tarefas
+PUT  http://localhost:5157/api/tarefas/alterar/2
+Content-Type: application/json
+
+{
+    "nome": "HUUM"
+}
