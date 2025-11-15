@@ -1,0 +1,11 @@
+### Listar todas as categorias
+GET http://localhost:5157/categoria/listar
+
+### Cadastrar uma categoria
+
+POST http://localhost:5157/categoria/cadastrar
+Content-Type: application/json
+
+{
+    "nome" : "pessoal"
+}
