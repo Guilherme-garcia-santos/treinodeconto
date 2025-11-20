@@ -3,12 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
+
+builder.Services.AddCors(options =>
+    options.AddPolicy("Acesso Total",
+        configs => configs
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod())
+);
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Prova A1");
+//app.MapGet("/", () => "Prova A1");
 
 //End Points de Categoria
-app.MapGet("Categoria/listar", ([FromServices] AppDataContext ctx) =>
+app.MapGet("/categoria/listar", ([FromServices] AppDataContext ctx) =>
 {
     if(ctx.Categorias.Any())
     {
@@ -17,8 +26,8 @@ app.MapGet("Categoria/listar", ([FromServices] AppDataContext ctx) =>
     return Results.NotFound("Nenhuma categoria encontrada");
 });
 
-app.MapPost("Categoria/cadastrar", ([FromServices] AppDataContext ctx,
-    [FromRoute] string id) =>
+app.MapPost("/categoria/cadastrar", ([FromServices] AppDataContext ctx,
+    [FromBody] Categoria categoria) =>
 {
     ctx.Categorias.Add(categoria);
     ctx.SaveChanges();
@@ -26,7 +35,7 @@ app.MapPost("Categoria/cadastrar", ([FromServices] AppDataContext ctx,
 });
 
 // End points Tarefa
-app.MapGet("tarefas/listar", ([FromServices] AppDataContext ctx) =>
+app.MapGet("/tarefas/listar", ([FromServices] AppDataContext ctx) =>
 {
     if(ctx.Tarefas.Any())
     {
@@ -35,32 +44,34 @@ app.MapGet("tarefas/listar", ([FromServices] AppDataContext ctx) =>
     return Results.NotFound("Nenhuma tarefa encontrada");
 });
 
-app.MapPost("tarefas/cadastrar", ([FromServices] AppDataContext ctx,
-    [FromRoute] string id) =>
+app.MapPost("/tarefas/cadastrar", ([FromServices] AppDataContext ctx,
+    [FromBody] Tarefa tarefa) =>
 {
-    Categoria? categoria = ctx.Categorias.Find(tarefa.categoriaId);
-    if(categoria = null)
+    Categoria? categoria = ctx.Categorias.Find(tarefa.CategoriaId);
+    if(categoria == null)
     {
         return Results.NotFound("Categoria não encontrada");
     }
-    Tarefa.Categoria = categoria;
+    tarefa.Categoria = categoria;
     ctx.Tarefas.Add(tarefa);
     ctx.SaveChanges();
     return Results.Created("", tarefa);
 });
 
 // PUT 
-app.MapPut("/tarefas/alterar{id}", ([FromServices] AppDataContext ctx,
+app.MapPut("/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx,
     [FromRoute] string id)=>
     {
+        Tarefa? tarefa = ctx.Tarefas.Find(id);
+
      if(tarefa is null)
         {
             return Results.NotFound("Tarefa não encontrada");
         }
-        if(tarefa.Status = "Não iniciada")
+        if(tarefa.Status == "Não iniciada")
         {
             tarefa.Status = "Em Andamento";
-        }else if (tarefa.Status = "Em andamento")
+        }else if (tarefa.Status == "Em andamento")
         {
             tarefa.Status = "Concluida";
         }
@@ -78,9 +89,10 @@ return Results.Ok(ctx.Tarefas.Where(x => x.Status != "Concluida").ToList());
 //GET
 app.MapGet("/tarefas/concluidas", ([FromServices] AppDataContext ctx)=>
 {
-return Results.Ok(ctx.Tarefas.Where(x => x.Status = "Concluida").ToList());
+return Results.Ok(ctx.Tarefas.Where(x => x.Status == "Concluida").ToList());
 });
 
+app.UseCors("Acesso Total");
 app.Run();
 
 
@@ -98,7 +110,7 @@ app.Run();
 
 
 
-app.MapGet("/", () => "Lista de coisas para fazer");
+//app.MapGet("/", () => "Lista de coisas para fazer");
 
 // app.MapPost("/api/tarefas/cadastrar", ([FromBody] Tarefa tarefa,
 //  [FromServices] AppDataContext ctx) =>

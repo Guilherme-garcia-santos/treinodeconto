@@ -1,14 +1,16 @@
 ### Listar todas as tarefas
 
-GET http://localhost:5157/api/tarefas/listar
+GET http://localhost:5157/tarefas/listar
 
 ### Cadastrar uma nova tarefa
 
-POST  http://localhost:5157/api/tarefas/cadastrar
+POST  http://localhost:5157/tarefas/cadastrar
 Content-Type: application/json
 
 {
-    "nome" : "pessoal"
+    "titulo" : "pessoal",
+    "descricao" : "Treino d3sconto",
+    "categoriaId" : "abc123"
 }
 
 ### Atualizar tarefa
@@ -20,8 +22,13 @@ GET http://localhost:5157/tarefas/concluidas
 ### Listar tarefas NãoConcluídas
 GET http://localhost:5157/tarefas/naoconcluidas
 
+### teste 
+POST http://localhost:5157/categoria/cadastrar
+Content-Type: application/json
 
-
+{
+    "nome": "Estudos"
+}
 # ### teste inicial
 # GET http://localhost:5157
 
