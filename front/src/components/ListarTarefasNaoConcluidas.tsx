@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Tarefa } from "../models/tarefa";
 
-function ListarTarefas() {
+function ListarTarefasNaoConcluidas() {
   // 1. ESTADOS E VARIÁVEIS (DENTRO da função, mas ANTES do return)
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
 
@@ -12,7 +12,7 @@ function ListarTarefas() {
 
   // 3. FUNÇÕES
   function carregarTarefas() {
-    fetch("http://localhost:5157/tarefas/listar")
+    fetch("http://localhost:5157/tarefas/naoconcluidas")
       .then((resposta) => resposta.json())
       .then((tarefas: Tarefa[]) => {
         console.table(tarefas);
@@ -32,7 +32,6 @@ function ListarTarefas() {
             <th>Descrição</th>
             <th>Status</th>
             <th>Criado em</th>
-            <th>Alterar Status</th>
 
 
           </tr>
@@ -60,4 +59,4 @@ function ListarTarefas() {
   );
 }
 
-export default ListarTarefas;
+export default ListarTarefasNaoConcluidas;
