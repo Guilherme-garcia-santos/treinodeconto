@@ -3,6 +3,7 @@ import ListarTarefas from './components/ListarTarefas';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import ListarTarefasConcluidas from './components/ListarTarefasConcluidas';
 import ListarTarefasNaoConcluidas from './components/ListarTarefasNaoConcluidas';
+import CadastrarTarefa from './components/CadastarTarefa';
 
 
 function App() {
@@ -31,6 +32,11 @@ function App() {
                       Listar Tarefas Não Concluidas {" "}
                     </Link>
                   </li>
+                  <li>
+                    <Link to={"/pages/tarefas/cadastrar"}>
+                      Cadastrar Tarefa {" "}
+                    </Link>
+                  </li>
                   {/* <li>
                     <Link to={"/pages/produto/cadastrar"}>
                       Cadastrar Produtos{ " " }
@@ -43,7 +49,7 @@ function App() {
                   </li> */}
               </ul>
           </nav>
-          <Routes>
+            <Routes>
                     <Route path="/" element={<ListarTarefas />} />
                     <Route 
                       path="/pages/tarefas/listar"
@@ -60,13 +66,22 @@ function App() {
                       />
                 </Routes>
 
-          <Routes>
+            <Routes>
                     <Route path="/" element={<ListarTarefas />} />
                     <Route 
                       path="/pages/tarefas/listarnaoconcluidas"
                       element={<ListarTarefasNaoConcluidas/>}
                       />
                 </Routes>
+
+            <Routes>
+                    <Route path="/" element={<CadastrarTarefa />} />
+                    <Route 
+                      path="/pages/tarefas/cadastrar"
+                      element={<CadastrarTarefa/>}
+                      />
+                </Routes>
+
         </BrowserRouter>
 
       </div>

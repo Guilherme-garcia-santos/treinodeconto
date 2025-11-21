@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Tarefa } from "../models/tarefa";
+import axios from "axios";
 
 function ListarTarefas() {
   // 1. ESTADOS E VARIÁVEIS (DENTRO da função, mas ANTES do return)
@@ -19,6 +20,17 @@ function ListarTarefas() {
         setTarefas(tarefas);
       });
   }
+
+  function alterar(id: string) {
+  console.log(`Id: ${id}`);
+  axios
+  
+    .put<Tarefa[]>(`http://localhost:5157/tarefas/alterar/${id}`)
+    .then((resposta) => {
+    setTarefas(resposta.data);
+    });
+
+}
 
   // 4. RENDERIZAÇÃO (O que aparece na tela)
   return (
@@ -46,11 +58,12 @@ function ListarTarefas() {
               <td>{tarefa.status}</td>
               <td>{tarefa.criadoEm}</td>
               
-              {/* <td>
-                <button onClick={() => deletarProduto(produto.id!)}>
-                  Deletar
+              <td>
+                <button onClick={() => 
+                  alterar(tarefa.tarefaId!)}>
+                  Alterar
                 </button>
-              </td> */}
+              </td> 
             
             </tr>
           ))}
